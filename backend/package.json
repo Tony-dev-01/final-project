@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "final project",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "Antoine Lafontaine",
+  "license": "ISC",
+  "dependencies": {
+    "auth0": "^3.6.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^5.7.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
+    "uuid": "^9.0.0"
+  }
+}
