@@ -7,21 +7,39 @@ import SidebarMenu from './components/SidebarMenu';
 const App = () => {
   return (
     <BrowserRouter>
-    <TopMenu>
-    <Header />
-    </TopMenu>
-    <SidebarMenu />
-      <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path="*" element={<h1>404: Not Found!</h1>} />
-      </Routes>
+    <Container>
+      <SidebarContainer>
+        <SidebarMenu />
+      </SidebarContainer>
+      <PageWrap>
+        {/* <Header /> */}
+        <Routes>
+          <Route path='/' element={<Homepage />} />
+          <Route path="*" element={<h1>404: Not Found!</h1>} />
+        </Routes>
+      </PageWrap>
+    </Container>
     </BrowserRouter>
   );
 }
 
-const TopMenu = styled.div`
+const PageWrap = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  flex: 1 1 90ch;
 `
+
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+`
+
+const SidebarContainer = styled.div`
+  display: flex;
+  flex: 1 1 auto;
+`
+
+
 
 export default App;

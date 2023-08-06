@@ -1,7 +1,9 @@
 import { createGlobalStyle } from "styled-components";
-
+import styled from "styled-components";
 
 export const GLOBALSTYLES = createGlobalStyle`
+    @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
     a, abbr, acronym, address, big, cite, code,
@@ -44,6 +46,47 @@ export const GLOBALSTYLES = createGlobalStyle`
     table {
         border-collapse: collapse;
         border-spacing: 0;
+    }
+    body{
+        background-color: #f0f0f0;
+    }
+
+    p, li, a, h1, h2, h3, h4, h5, h6 {
+        font-family: "Josefin", sans-serif;
+    }
+    
+    h1{
+        font-size: 2.2em;
+        font-weight: 600;
+    }
+
+    h2{
+        font-size: 1.8em;
+        font-weight: 600;
+    }
+
+    h3{
+        font-size: 1.8em;
+        font-weight: 600;
+    }
+
+    h4{
+        font-size: 1.6em;
+        font-weight: 600;
+    }
+
+    h5{
+        font-size: 1.4em;
+        font-weight: 600;
+    }
+
+    h6{
+        font-size: 1.2em;
+        font-weight: 600;
+    }
+
+    button{
+        font-weight: 500;
     }
 
 `

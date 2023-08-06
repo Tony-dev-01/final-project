@@ -1,0 +1,7 @@
+
+
+const initalState = {
+    status: 'idle'
+};
+
+
