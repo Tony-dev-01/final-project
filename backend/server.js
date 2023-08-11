@@ -3,7 +3,7 @@
 const express = require('express');
 const morgan = require('morgan');
 
-const { getAllNews } = require('./handlers');
+const { getAllNews, getNews, getAllScoreboards, getAllTeamsFromLeague, getLeagueLogo } = require('./handlers');
 
 
 express()
@@ -26,10 +26,18 @@ express()
 // Insert all endpoints below this line
 // --------------------------------------------------------------
 
-
+// GET news
 .get('/news', getAllNews)
+.get('/news/:id', getNews)
 
+// GET Scoreboards
+.get('/scoreboard', getAllScoreboards)
 
+// GET Teams
+.get('/teams', getAllTeamsFromLeague)
+
+// GET logos
+.get('/logo/:league', getLeagueLogo)
 
 // Catch all endpoint
 .get('*', (req, res) => {

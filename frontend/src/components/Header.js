@@ -5,10 +5,12 @@ import { COLORS } from "../Constants";
 const Header = () => {
     return (
         <Wrapper>
-            <NavList>
-                <MenuLink><MenuItem>test</MenuItem></MenuLink>
-                <MenuLink><MenuItem>test</MenuItem></MenuLink>
-            </NavList>
+                <NavList>
+                    <MenuLink><MenuItem>NHL</MenuItem></MenuLink>
+                    <MenuLink><MenuItem>NFL</MenuItem></MenuLink>
+                    <MenuLink><MenuItem>NBA</MenuItem></MenuLink>
+                    <MenuLink><MenuItem>MLB</MenuItem></MenuLink>
+                </NavList>
         </Wrapper>
     )
 };
@@ -19,9 +21,16 @@ const Wrapper = styled.nav`
     align-items: center;
     height: 45px;
     width: 100vw;
-    background-color: lightgrey;
+    background-color: ${COLORS.secondThree};
     position: fixed;
     padding-left: 40px;
+`
+
+const Scoreboard = styled.div`
+    display: flex;
+    width: 100%;
+    height: 3vh;
+    background: turquoise;
 `
 
 const NavList = styled.ul`

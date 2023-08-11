@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { styled } from "styled-components";
 import logo from '../assets/logo-light.png'
-import { IoAnalyticsSharp, IoBarChart, IoCalendarClear, IoNewspaper, IoPodium } from "react-icons/io5";
+import { IoAnalyticsSharp, IoBarChart, IoCalendarClear, IoStatsChart, IoPodium, IoNewspaper  } from "react-icons/io5";
 import { COLORS } from "../Constants";
 
 
@@ -11,11 +11,11 @@ const SidebarMenu = () => {
             <MenuContainer>
                 <LogoContainer><NavLink to='/'><Logo src={logo} /></NavLink></LogoContainer>
                 <MenuList>
-                    <MenuLink><MenuItem><IoAnalyticsSharp />Dashboard</MenuItem></MenuLink>
-                    <MenuLink><MenuItem><IoNewspaper />News</MenuItem></MenuLink>
-                    <MenuLink><MenuItem><IoBarChart />Statistics</MenuItem></MenuLink>
-                    <MenuLink><MenuItem><IoCalendarClear />Schedule</MenuItem></MenuLink>
-                    <MenuLink><MenuItem><IoPodium />Standing</MenuItem></MenuLink>
+                    <MenuLink to='/'><MenuItem><IoAnalyticsSharp />Dashboard</MenuItem></MenuLink>
+                    <MenuLink to='/scoreboard'><MenuItem><IoNewspaper />Scores</MenuItem></MenuLink>
+                    <MenuLink to='/statistics'><MenuItem><IoStatsChart />Statistics</MenuItem></MenuLink>
+                    <MenuLink to='/schedule'><MenuItem><IoCalendarClear />Schedule</MenuItem></MenuLink>
+                    <MenuLink to='/standings'><MenuItem><IoPodium />Standing</MenuItem></MenuLink>
                 </MenuList>
                 <ButtonContainer>
                     <LoginButton>Login</LoginButton>
@@ -79,12 +79,13 @@ const MenuLink = styled(NavLink)`
 
     &:hover, &:focus{
         background-color: #242424;
-        border-left: ${COLORS.primary} solid 2.5px;
         width: calc(100% - 2.5px);
     }
 
-    &:active{
-        
+    &.active{
+        background-color: #242424;
+        border-left: ${COLORS.primary} solid 2.5px;
+        width: calc(100% - 2.5px);
     }
 
     &:visited{

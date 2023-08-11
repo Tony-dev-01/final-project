@@ -48,7 +48,7 @@ export const GLOBALSTYLES = createGlobalStyle`
         border-spacing: 0;
     }
     body{
-        background-color: #f0f0f0;
+        background-color: white;
     }
 
     p, li, a, h1, h2, h3, h4, h5, h6 {
@@ -66,7 +66,7 @@ export const GLOBALSTYLES = createGlobalStyle`
     }
 
     h3{
-        font-size: 1.8em;
+        font-size: 1.6em;
         font-weight: 600;
     }
 
