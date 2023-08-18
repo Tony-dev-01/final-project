@@ -1,26 +1,47 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import logo from '../assets/logo-light.png'
-import { IoAnalyticsSharp, IoBarChart, IoCalendarClear, IoStatsChart, IoPodium, IoNewspaper  } from "react-icons/io5";
+import { IoAnalyticsSharp, IoHome, IoBarChart, IoCalendarClear, IoStatsChart, IoPodium, IoNewspaper, IoExitOutline } from "react-icons/io5";
 import { COLORS } from "../Constants";
+import PrimaryButton from "./PrimaryButton";
+import SecondaryButton from "./SecondaryButton";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 
 const SidebarMenu = () => {
+    const navigate = useNavigate();
+    const {user, setUser} = useContext(UserContext);
+
+    const handleLogOut = () => {
+        window.sessionStorage.clear();
+        setUser()
+        navigate('/');
+    };
+
     return (
         <Wrapper>
             <MenuContainer>
                 <LogoContainer><NavLink to='/'><Logo src={logo} /></NavLink></LogoContainer>
                 <MenuList>
-                    <MenuLink to='/'><MenuItem><IoAnalyticsSharp />Dashboard</MenuItem></MenuLink>
+                    {user ? <MenuLink to='/'><MenuItem><IoAnalyticsSharp />Dashboard</MenuItem></MenuLink> :
+                    <MenuLink to='/'><MenuItem><IoHome />Home</MenuItem></MenuLink>}
                     <MenuLink to='/scoreboard'><MenuItem><IoNewspaper />Scores</MenuItem></MenuLink>
                     <MenuLink to='/statistics'><MenuItem><IoStatsChart />Statistics</MenuItem></MenuLink>
                     <MenuLink to='/schedule'><MenuItem><IoCalendarClear />Schedule</MenuItem></MenuLink>
                     <MenuLink to='/standings'><MenuItem><IoPodium />Standing</MenuItem></MenuLink>
                 </MenuList>
+                {user ? 
+                <UserContainer>
+                    <UserName>{user.userName}</UserName>
+                    <LogoutButton onClick={() => handleLogOut()}><IoExitOutline style={{color: `${COLORS.secondOne}`, width: '100%', height: '100%'}}/></LogoutButton>
+                </UserContainer>
+                :
                 <ButtonContainer>
-                    <LoginButton>Login</LoginButton>
-                    <NewUserButton>Create Account</NewUserButton>
+                    <PrimaryButton text={"Login"} clickFunc={() => navigate('/login')} />
+                    <SecondaryButton text={"Create Account"} clickFunc={() => navigate('/create-account')} />
                 </ButtonContainer>
+                }
             </MenuContainer>
         </Wrapper>
     )
@@ -30,8 +51,8 @@ const Wrapper = styled.nav`
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 17vw;
-    max-width: 220px;
+    width: 15vw;
+    /* min-width: 220px; */
     background-color: #141414;
     color: white;
     position: fixed;
@@ -101,20 +122,33 @@ const ButtonContainer = styled.div`
     gap: 10px;
 `
 
-const LoginButton = styled.button`
-    width: 80%;
-    background-color: ${COLORS.primary};
-    border: none;
-    border-radius: 5px;
-    height: 30px;
-    color: white;
+const UserContainer = styled.div`
+    display: flex;
+    border-top: 1px solid grey;
+    padding: 6% 20px 0 20px;
+    justify-content: space-between;
+    align-items: center;
 `
 
-const NewUserButton = styled(LoginButton)`
-    width: 80%;
-    border: 2px solid ${COLORS.primary};
-    background: transparent;
-    color: ${COLORS.primary};
+const UserName = styled.p`
 `
+
+const LogoutButton = styled.button`
+    display: flex;
+    background-color: #242424;
+    border: none;
+    border-radius: 6px;
+    height: 30px;
+    width: 30px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover, &:focus{
+        background-color: ${COLORS.primaryHover};
+    }
+`
+
+
 
 export default SidebarMenu;

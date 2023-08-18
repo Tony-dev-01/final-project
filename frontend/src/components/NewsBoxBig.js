@@ -44,7 +44,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 500px;
+    width: 100%;
     height: 370px;
     border-radius: 8px;
     background-color: pink;

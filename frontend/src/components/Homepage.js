@@ -5,12 +5,13 @@ import { useContext, useEffect, useState } from "react";
 import NewsBoxBig from "./NewsBoxBig";
 import { COLORS } from "../Constants";
 import ScoreBox from "./ScoreBoxSmall";
+import { UserContext } from "../context/UserContext";
 
 const Homepage = () => {
     const [news, setNews] = useState([]);
     const [scoreboard, setScoreboard] = useState({});
+    const {user} = useContext(UserContext);
 
-    console.log(scoreboard)
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -42,10 +43,10 @@ const Homepage = () => {
         <Wrapper>
             <Header />
             <Content>
-                <h1>Home</h1>
+                {user ? <h1>Dashboard</h1> : <h1>Home</h1>}
                 <Section>
                 <MainContent>
-                    {news.length > 0 && news.map((news) => <NewsBoxBig news={news} />)}
+                    {news.length > 0 && news.map((news) => <NewsBoxBig news={news} key={news.id}/>)}
                     {/* <Slider content={news}/> */}
                 </MainContent>
                 <Sibebar>
@@ -75,7 +76,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 83vw;
+    width: 85vw;
     height: 100vh;
     margin: auto;
     justify-content: flex-start;
@@ -110,7 +111,7 @@ const Sibebar = styled.section`
     display: flex;
     flex-direction: column;
     gap: 15px;
-    width: 40%;
+    width: 37%;
 `
 
 const SidebarScoreboard = styled.div`

@@ -6,7 +6,7 @@ export const COLORS = {
     secondThree: '#f2f5f3',
 
     // Hover colors
-    primaryHover: '',
+    primaryHover: '#ab2516',
     secondOneHover: '',
     secondTwoHover: ''
 }

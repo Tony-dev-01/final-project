@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 import { COLORS } from "../Constants";
 
 const ScoreBox = ({game}) => {
-    console.log(game)
 
     return(
         <Wrapper>

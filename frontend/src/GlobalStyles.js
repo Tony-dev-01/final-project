@@ -51,8 +51,12 @@ export const GLOBALSTYLES = createGlobalStyle`
         background-color: white;
     }
 
-    p, li, a, h1, h2, h3, h4, h5, h6 {
+    p, li, a, h1, h2, h3, h4, h5, h6, label {
         font-family: "Josefin", sans-serif;
+    }
+
+    label{
+        font-size: 0.85em;
     }
     
     h1{
@@ -88,6 +92,7 @@ export const GLOBALSTYLES = createGlobalStyle`
     button{
         font-weight: 500;
     }
+
 
 `
 

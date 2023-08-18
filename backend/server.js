@@ -3,7 +3,14 @@
 const express = require('express');
 const morgan = require('morgan');
 
-const { getAllNews, getNews, getAllScoreboards, getAllTeamsFromLeague, getLeagueLogo } = require('./handlers');
+const { getAllNews, 
+getNews, 
+getAllScoreboards, 
+getAllTeamsFromLeague, 
+getLeagueLogo,
+getUser, 
+createUser, 
+updateUser} = require('./handlers');
 
 
 express()
@@ -38,6 +45,12 @@ express()
 
 // GET logos
 .get('/logo/:league', getLeagueLogo)
+
+// User endpoints
+// .get('/users')
+.get('/users', getUser)
+.post('/users', createUser)
+.patch('/users', updateUser)
 
 // Catch all endpoint
 .get('*', (req, res) => {

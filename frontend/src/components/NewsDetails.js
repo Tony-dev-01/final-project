@@ -55,7 +55,7 @@ const NewsDetails = () => {
                     <Published>{convertDate(news.published)}</Published>
                 </HeaderContainer>
                 <Article>
-                    <p>{news.story}</p>
+                    <div dangerouslySetInnerHTML={{__html: news.story}}></div>
                 </Article>
                 {news.related.length > 0 &&
                 <RelatedArticlesContainer>

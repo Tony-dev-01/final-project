@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Homepage from './components/Homepage';
-import Header from './components/Header';
 import SidebarMenu from './components/SidebarMenu';
 import Scoreboard from './components/Scoreboard';
 import NewsDetails from './components/NewsDetails';
 import Statistics from './components/Statistics';
+import Login from './components/Login';
+import CreateAccount from './components/CreateAccount';
+import PickFavTeam from './components/PickFavTeam';
 
 const App = () => {
   return (
@@ -15,12 +17,14 @@ const App = () => {
         <SidebarMenu />
       </SidebarContainer>
       <PageWrap>
-        {/* <Header /> */}
         <Routes>
           <Route path='/' element={<Homepage />} />
           <Route path='/news' element={<Scoreboard />} />
           <Route path='/news/:id' element={<NewsDetails />} />
           <Route path='/statistics' element={<Statistics/>} />
+          <Route path='/login' element={<Login/>} />
+          <Route path='/create-account' element={<CreateAccount/>} />
+          <Route path='/user/pick-team' element={<PickFavTeam />} />
           <Route path='/' element={<Homepage />} />
           <Route path="*" element={<h1>404: Not Found!</h1>} />
         </Routes>
@@ -44,7 +48,8 @@ const Container = styled.div`
 
 const SidebarContainer = styled.div`
   display: flex;
-  flex: 1 1 auto;
+  width: 15%;
+  height: 100vh;
 `
 
 
