@@ -8,7 +8,10 @@ getNews,
 getAllScoreboards, 
 getAllTeamsFromLeague, 
 getLeagueLogo,
+getTeamSchedule,
+getLeagueStandings,
 getUser, 
+getTeamStats,
 createUser, 
 updateUser} = require('./handlers');
 
@@ -45,6 +48,15 @@ express()
 
 // GET logos
 .get('/logo/:league', getLeagueLogo)
+
+// GET statistics
+.get('/statistics/:league/:teamId/:season', getTeamStats)
+
+// GET schedule
+.get('/schedule/:league', getTeamSchedule)
+
+// GET standings
+.get('/standings/:league', getLeagueStandings)
 
 // User endpoints
 // .get('/users')

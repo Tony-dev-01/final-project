@@ -8,6 +8,8 @@ import Statistics from './components/Statistics';
 import Login from './components/Login';
 import CreateAccount from './components/CreateAccount';
 import PickFavTeam from './components/PickFavTeam';
+import Schedule from './components/Schedule';
+import Standings from './components/Standings';
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
           <Route path='/news' element={<Scoreboard />} />
           <Route path='/news/:id' element={<NewsDetails />} />
           <Route path='/statistics' element={<Statistics/>} />
+          <Route path='/schedule' element={<Schedule/>} />
+          <Route path='/standings' element={<Standings/>} />
           <Route path='/login' element={<Login/>} />
           <Route path='/create-account' element={<CreateAccount/>} />
           <Route path='/user/pick-team' element={<PickFavTeam />} />

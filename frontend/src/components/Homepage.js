@@ -77,7 +77,8 @@ export const Wrapper = styled.div`
     flex-direction: column;
     position: relative;
     width: 85vw;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
     margin: auto;
     justify-content: flex-start;
     align-items: flex-start;

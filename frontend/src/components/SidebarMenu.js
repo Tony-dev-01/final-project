@@ -29,7 +29,7 @@ const SidebarMenu = () => {
                     <MenuLink to='/scoreboard'><MenuItem><IoNewspaper />Scores</MenuItem></MenuLink>
                     <MenuLink to='/statistics'><MenuItem><IoStatsChart />Statistics</MenuItem></MenuLink>
                     <MenuLink to='/schedule'><MenuItem><IoCalendarClear />Schedule</MenuItem></MenuLink>
-                    <MenuLink to='/standings'><MenuItem><IoPodium />Standing</MenuItem></MenuLink>
+                    <MenuLink to='/standings'><MenuItem><IoPodium />Standings</MenuItem></MenuLink>
                 </MenuList>
                 {user ? 
                 <UserContainer>

@@ -6,19 +6,15 @@ import { LeagueContext } from "../context/LeagueContext"
 import { COLORS } from "../Constants"
 
 
-const Statistics = () => {
-    const [teams, setTeams] = useState({});
-    const [selectedTeam, setSelectedTeam] = useState({});
+const Standings = () => {
     const [selectedSeason, setSelectedSeason] = useState('');
     const [selectedLeague, setSelectedLeague] = useState('');
-    const [teamData, setTeamData] = useState({});
-    const [teamInfo, setTeamInfo] = useState({});
-    const [teamRecord, setTeamRecord] = useState({});
+    const [data, setData] = useState({});
+
     const [error, setError] = useState('');
     const {state, updateLeague} = useContext(LeagueContext);
 
-    console.log(teamData)
-    console.log(teamInfo)
+    console.log(data)
 
     // console.log(teams)
 
@@ -44,50 +40,17 @@ const Statistics = () => {
         setSelectedSeason(e.target.value);
     }
 
-    const handleTeamSelect = (e) => {
-        
-        setSelectedTeam(e.target.value)
-    }
-
-    useEffect(() => {
-        const fetchTeams = async () => {
-            try {
-                const response = await fetch('/teams');
-                const data = await response.json();
-                setTeams(data.data);
-            } catch(err) {
-                console.log(err.message)
-            }
-        }
-
-        if (selectedLeague.length !== 0){
-            fetchTeams();
-        }
-
-    }, [selectedLeague])
-
     useEffect(() => {
         const fetchData = async () => {
             try{
-                const response = await fetch(`statistics/${selectedLeague}/${selectedTeam}/${selectedSeason}`);
+                const response = await fetch(`/standings/${selectedLeague}`);
                 const data = await response.json();
-                console.log(data);
 
                 if (data.status === 404){
                     throw new Error(data.message);
                 } else if (data.status === 200){
                     setError('');
-                    const teamResponse = await fetch(`${data.data.team.$ref}`);
-                    const teamData = await teamResponse.json();
-
-
-                    const teamRecord = await fetch(`${teamData.record.$ref}`);
-                    const record = await teamRecord.json();
-
-                    setTeamRecord(record);
-                    setTeamData(data.data);
-                    setTeamInfo(teamData);
-
+                    setData(data.data);
                 }
 
             } catch(err){
@@ -95,17 +58,17 @@ const Statistics = () => {
             }
         };
 
-        if (selectedLeague.length > 0 && selectedSeason.length > 0 && selectedTeam.length > 0){
+        if (selectedLeague.length > 0){
             fetchData();
         }
 
-    }, [selectedSeason, selectedTeam, selectedLeague]);
+    }, [selectedLeague]);
 
     return (
         <Wrapper>
             <Header />
             <Content>
-                <h1>Statistics</h1>
+                <h1>Standings</h1>
                 <Section>
                     <Container>
                         <TopBar>
@@ -119,20 +82,7 @@ const Statistics = () => {
                                     <option value="mlb" selected={state.league === 'mlb'}>MLB</option>
                                 </select>
                             </LeagueContainer>
-                            <TeamContainer>
-                            <label htmlFor="team">Select team</label>
-                                <select name="team" id="team" defaultValue={""} onChange={(e) => handleTeamSelect(e)}>
-                                    <option value="" >Select team</option>
-                                    {state.data &&
-                                    state.data.map((team) => {
-                                        return (
-                                            <option value={team.id} key={team.id}>{team.displayName}</option>
-                                        )
-                                    })
-                                    }
-                                </select>
-                            </TeamContainer>
-                            <SeasonContainer>
+                            {/* <SeasonContainer>
                                 <label htmlFor="season">Select season</label>
                                 <select name="season" defaultValue={""} id="season" onChange={(e) => handleSeasonSelect(e)}>
                                     <option value="">Select season</option>
@@ -141,7 +91,7 @@ const Statistics = () => {
                                     <option value="2022">2022</option>
                                     <option value="2023">2023</option>
                                 </select>
-                            </SeasonContainer>
+                            </SeasonContainer> */}
                         </TopBar>
                     </Container>
                 </Section>
@@ -149,42 +99,60 @@ const Statistics = () => {
                     <StatsContainer>
                         {error.length > 0 ?
                             <ErrorMessage>{error}</ErrorMessage> :
-                            Object.keys(teamData).length > 0 &&
+                            Object.keys(data).length > 0 &&
                             <>
-                            {Object.keys(teamInfo).length > 0 &&
-                            <TeamDisplay>
-                                <TeamLogo src={teamInfo.logos[0].href} />
-                                <TeamRecordContainer>
-                                    <TeamName>{teamInfo.displayName}</TeamName>
-                                    {Object.keys(teamRecord).length > 0 &&
-                                        <TeamRecord>{teamRecord.items[0].displayValue}</TeamRecord>
-                                    }
-                                </TeamRecordContainer>
-                            </TeamDisplay>
-                            }
-                                <StatsTitle>Team</StatsTitle>
-                                <Stats>
-                                    {teamData.splits.categories.map((category) => {
-                                        return (
-                                            <StatsRow>
-                                                <h4>{category.displayName}</h4>
-                                                <StatsRows>
-                                                {category.stats.map((stat) => {
-                                                    return(
-                                                        <StatsBox>
-                                                            <StatIdent>
-                                                                <StatsValue>{stat.displayValue}</StatsValue>
-                                                                <StatsName>{stat.displayName}</StatsName>
-                                                            </StatIdent>
-                                                            <StatsRank>{stat.rankDisplayValue}</StatsRank>
-                                                        </StatsBox>
-                                                    )
-                                                })}
-                                                </StatsRows>
-                                            </StatsRow>
-                                        )
-                                    })}
-                                </Stats>
+                                <StatsTitle>{selectedLeague.toUpperCase()}</StatsTitle>
+                                {Object.keys(data).length > 0 &&
+                                    <>
+                                        {data.groups.length > 0 &&
+                                            data.groups.map((division) => {
+                                                return (
+                                                    <>
+                                                    {division.groups !== undefined ?
+                                                        
+                                                        division.groups.map((group) => {
+                                                        return (
+                                                            <DivisonContainer>
+                                                            <h4>{group.name}</h4>
+                                                            <TeamDisplayContainer>
+                                                            {group.standings['entries'].length > 0 &&
+                                                            group.standings['entries'].map((team) => {
+                                                                return (
+                                                                    <TeamDisplay>
+                                                                        <TeamInfo>
+                                                                            <TeamRank>{team.team.seed}</TeamRank>
+                                                                            <TeamLogo src={team.team.logos[0].href} />
+                                                                            <p>{team.team.displayName}</p>
+                                                                        </TeamInfo>
+                                                                        <TeamStatsContainer>
+                                                                        {team.stats.map((stats) => {
+                                                                            return (
+                                                                                <TeamStats>
+                                                                                    <StatsName>{stats.shortDisplayName}</StatsName>
+                                                                                    <p>{stats.displayValue}</p>
+                                                                                </TeamStats>
+                                                                            )
+                                                                        })}
+                                                                        </TeamStatsContainer>
+                                                                    </TeamDisplay>
+                                                                )
+                                                            })}
+                                                            </TeamDisplayContainer>
+                                                            </DivisonContainer>
+                                                        )
+                                                    }) :
+                                                    <>
+                                                        <h4>{division.name}</h4>
+                                                        <NoDataMessage>No data available.</NoDataMessage>
+                                                    </>
+                                                    }
+
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                    </>
+                                }
                             </>
                         }
                     </StatsContainer>
@@ -203,6 +171,9 @@ const Container = styled.div`
     display: flex;
 `
 
+
+
+
 const StatsContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -215,14 +186,6 @@ const StatsContainer = styled.div`
 `
 
 const StatsTitle = styled.h3`
-`
-
-const Stats = styled.div`
-    display: flex;
-    height: 100px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
 `
 
 
@@ -258,11 +221,6 @@ const StatsRank = styled.p`
 
 const StatsValue = styled.p`
     font-size: 2.2em;
-`
-
-const StatsName = styled.p`
-    text-align: center;
-    font-weight: bold;
 `
 
 const StatIdent = styled.div`
@@ -308,24 +266,72 @@ const ErrorMessage = styled.p`
     align-items: center;
 `
 
+const NoDataMessage = styled(ErrorMessage)`
+`
+
 const TeamName = styled.h2`
 `
 
 const TeamLogo = styled.img`
-    width: 150px;
+    width: 60px;
+`
+
+const DivisonContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`
+
+
+const TeamDisplayContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 `
 
 const TeamDisplay = styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 0 20px;
+    width: calc(100% - 40px);
+    height: 70px;
+`
+
+const TeamInfo = styled.div`
+    display: flex;
+    align-items: center;
     gap: 15px;
 `
 
-const TeamRecordContainer = styled.div`
+const TeamStatsContainer = styled.div`
+    display: flex;
+    gap: 20px;
+    width: 68%;
+`
+
+const TeamStats = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 `
+
+const StatsName = styled.p`
+    font-weight: bold;
+`
+
+
+const TeamRank = styled.p`
+    font-weight: bold;
+    font-size: 1.2em;
+`
+
+
 
 const TeamRecord = styled.p`
 
@@ -337,4 +343,4 @@ const TeamRecord = styled.p`
 // `
 
 
-export default Statistics
+export default Standings;

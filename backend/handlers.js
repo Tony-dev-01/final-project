@@ -104,9 +104,93 @@ const getLeagueLogo = async (req, res) => {
     }
 }
 
+const getTeamStats = async (req, res) => {
+    const teamId = req.params.teamId;
+    const season = req.params.season;
+    const league = req.params.league;
+    let sport;
+
+    if (league === 'nfl'){
+        sport = 'football'
+    } else if (league === 'nhl'){
+        sport = 'hockey'
+    } else if (league === 'nba'){
+        sport = 'basketball'
+    } else if (league === 'mlb'){
+        sport = 'baseball'
+    }
+
+    try {   
+        const request = await fetch(`http://sports.core.api.espn.com/v2/sports/${sport}/leagues/${league}/seasons/${season}/types/1/teams/${teamId}/statistics`);
+        const data = await request.json();
+
+        if (data.error !== undefined){
+            if (data.error.code !== undefined && data.error.code === 404){
+                throw new Error(data.error.message);
+            }
+        } else {
+            res.status(200).json({status: 200, data: data});
+        }
+
+    } catch(err){
+        console.log(err)
+        res.status(404).json({status: 404, data: {}, message: err.message})
+    }
+};
+
+const getTeamSchedule = async (req, res) => {
+    const league = req.params.league;
+    let data;
+    let request;
+    let date;
+
+    if (req.query.date){
+        date = req.query.date;
+    }
+
+    try {  
+        request = await fetch(`https://cdn.espn.com/core/${league}/schedule?xhr=1&date=${date}`);
+
+        data = await request.json();
+
+        if (data.error !== undefined){
+                if (data.error.code !== undefined && data.error.code === 404){
+                    throw new Error(data.error.message);
+                }
+            } else {
+                res.status(200).json({status: 200, data: data.content});
+            }
+
+    } catch(err){
+        console.log(err)
+        res.status(404).json({status: 404, data: {}, message: err.message})
+    }
+}
+
+const getLeagueStandings = async (req, res) => {
+    const league = req.params.league;
+
+    try {  
+        const request = await fetch(`https://cdn.espn.com/core/${league}/standings?xhr=1`);
+
+        const data = await request.json();
+
+        if (data.error !== undefined){
+                if (data.error.code !== undefined && data.error.code === 404){
+                    throw new Error(data.error.message);
+                }
+            } else {
+                res.status(200).json({status: 200, data: data.content.standings});
+            }
+
+    } catch(err){
+        console.log(err)
+        res.status(404).json({status: 404, data: {}, message: err.message})
+    }
+}
+
 
 // Users handlers
-
 const getUsers = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
 
@@ -241,5 +325,8 @@ module.exports = {
     getAllScoreboards,
     getAllTeamsFromLeague,
     getLeagueLogo,
+    getTeamStats,
+    getTeamSchedule,
+    getLeagueStandings,
     getUsers, getUser, createUser, deleteUser, updateUser
 }

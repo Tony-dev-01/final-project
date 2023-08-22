@@ -51,7 +51,7 @@ export const GLOBALSTYLES = createGlobalStyle`
         background-color: white;
     }
 
-    p, li, a, h1, h2, h3, h4, h5, h6, label {
+    p, li, a, h1, h2, h3, h4, h5, h6, label, input {
         font-family: "Josefin", sans-serif;
     }
 
@@ -75,17 +75,17 @@ export const GLOBALSTYLES = createGlobalStyle`
     }
 
     h4{
-        font-size: 1.6em;
+        font-size: 1.3em;
         font-weight: 600;
     }
 
     h5{
-        font-size: 1.4em;
+        font-size: 1.2em;
         font-weight: 600;
     }
 
     h6{
-        font-size: 1.2em;
+        font-size: 1em;
         font-weight: 600;
     }
 
