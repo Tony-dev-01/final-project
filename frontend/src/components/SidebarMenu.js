@@ -11,11 +11,11 @@ import { UserContext } from "../context/UserContext";
 
 const SidebarMenu = () => {
     const navigate = useNavigate();
-    const {user, setUser} = useContext(UserContext);
+    const {user, setUser, disconnectUser} = useContext(UserContext);
 
-    const handleLogOut = () => {
-        window.sessionStorage.clear();
-        setUser()
+    const handleLogOut = (disconnectUser) => {
+        disconnectUser();
+        setUser();
         navigate('/');
     };
 
@@ -34,7 +34,7 @@ const SidebarMenu = () => {
                 {user ? 
                 <UserContainer>
                     <UserName>{user.userName}</UserName>
-                    <LogoutButton onClick={() => handleLogOut()}><IoExitOutline style={{color: `${COLORS.secondOne}`, width: '100%', height: '100%'}}/></LogoutButton>
+                    <LogoutButton onClick={() => handleLogOut(disconnectUser)}><IoExitOutline style={{color: `${COLORS.secondOne}`, width: '100%', height: '100%'}}/></LogoutButton>
                 </UserContainer>
                 :
                 <ButtonContainer>
@@ -52,7 +52,7 @@ const Wrapper = styled.nav`
     flex-direction: column;
     height: 100vh;
     width: 15vw;
-    /* min-width: 220px; */
+    /* min-width: 180px; */
     background-color: #141414;
     color: white;
     position: fixed;
@@ -64,6 +64,7 @@ const MenuContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     height: 95%;
+    width: 100%;
 `
 
 const Logo = styled.img`

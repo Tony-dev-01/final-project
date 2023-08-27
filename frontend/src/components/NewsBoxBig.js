@@ -6,7 +6,12 @@ import { format, compareAsc } from 'date-fns';
 import { COLORS } from '../Constants';
 
 const handleClick = (news, navigate) => {
-    navigate(`/news/${news.id}`)
+    if (news.id !== undefined){
+        navigate(`/news/${news.id}`)
+    } else {
+        const url = news.links.api.news.href.split('/')
+        navigate(`/news/${url[url.length - 1]}`)
+    }
 };
 
 const convertDate = (date) => {
@@ -24,7 +29,7 @@ const NewsBoxBig = ({news}) => {
 
     return (
         <Wrapper role='link' onClick={() => handleClick(news, navigate)}>
-                <Container src={news.images.length > 0 && news.images[0].url}> 
+                <Container src={news.images.length > 0 && news.images[0].url !== undefined && news.images[0].url}> 
                 <div></div>
                 <InfoSection>
                     <Headline>{news.headline}</Headline>

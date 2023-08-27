@@ -5,10 +5,12 @@ const morgan = require('morgan');
 
 const { getAllNews, 
 getNews, 
+getNewsForTeam,
 getAllScoreboards, 
 getAllTeamsFromLeague, 
 getLeagueLogo,
 getTeamSchedule,
+getLeagueSchedule,
 getLeagueStandings,
 getUser, 
 getTeamStats,
@@ -39,6 +41,7 @@ express()
 // GET news
 .get('/news', getAllNews)
 .get('/news/:id', getNews)
+.get('/news/:sport/:league/:teamId', getNewsForTeam)
 
 // GET Scoreboards
 .get('/scoreboard', getAllScoreboards)
@@ -53,7 +56,8 @@ express()
 .get('/statistics/:league/:teamId/:season', getTeamStats)
 
 // GET schedule
-.get('/schedule/:league', getTeamSchedule)
+.get('/schedule/:league', getLeagueSchedule)
+.get('/schedule/:league/:teamId', getTeamSchedule)
 
 // GET standings
 .get('/standings/:league', getLeagueStandings)

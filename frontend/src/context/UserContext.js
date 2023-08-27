@@ -10,12 +10,8 @@ const initalState = {
 
 const reducer = (state, action) => {
     switch(action.type){
-        case 'connect-user':
-            return window.sessionStorage.setItem('user', JSON.stringify(action.payload));
-            // return {...action.payload};
         case 'disconnect-user':
             return window.sessionStorage.clear();
-            // return {};
         case 'update-user':
             window.sessionStorage.clear();
             return window.sessionStorage.setItem('user', JSON.stringify(action.payload));
@@ -45,9 +41,15 @@ export const UserContextProvider = ({children}) => {
         })
     };
 
+    const disconnectUser = () => {
+        dispatch({
+            type: 'disconnect-user'
+        })
+    };
+
 
     return(
-        <UserContext.Provider value={{user, setUser, updateUser}}>
+        <UserContext.Provider value={{user, setUser, updateUser, disconnectUser}}>
             {children}
         </UserContext.Provider>
     )

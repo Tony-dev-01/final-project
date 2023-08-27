@@ -41,6 +41,22 @@ const getNews = async (req, res) => {
     }
 };
 
+const getNewsForTeam = async (req, res) => {
+    const league = req.params.league;
+    const teamId = req.params.teamId;
+    const sport = req.params.sport;
+
+    try {
+        const request = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${sport}/${league}/news?team=${teamId}`);
+        const data = await request.json();
+
+        res.status(200).json({status: 200, data: data});
+    } catch (err) {
+        res.status(404).json({status: 404, data: {}, message: 'not found'});
+        console.log(err.message)
+    }
+};
+
 const getScoreboard = async (req, res) => {
     try {
         const request = await fetch(`https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=baseball&league=mlb&region=us&lang=en&contentorigin=espn&buyWindow=1m&showAirings=buy%2Clive%2Creplay&showZipLookup=true&tz=America%2FNew_York`)
@@ -139,6 +155,47 @@ const getTeamStats = async (req, res) => {
 };
 
 const getTeamSchedule = async (req, res) => {
+    const league = req.params.league;
+    const teamId = req.params.teamId;
+    let data;
+    let request;
+    let teamSchedule = [];
+
+    try {  
+        request = await fetch(`https://cdn.espn.com/core/${league}/schedule?xhr=1`);
+
+        data = await request.json();
+
+        if (data.error !== undefined){
+                if (data.error.code !== undefined && data.error.code === 404){
+                    throw new Error(data.error.message);
+                }
+            } else {
+                // filter results to return only the schedule of a specific team
+                let dates = Object.keys(data.content.schedule);
+                
+                dates.forEach((date) => {
+                    let day = data.content.schedule[date]
+                    if (day.games !== undefined && day.games.length > 0){
+                        day.games.forEach((game) => {
+                            game.competitions[0].competitors.forEach((team) => {
+                                if (team.id == teamId){
+                                    teamSchedule.push(game);
+                                }
+                            })
+                        })
+                    }
+                })
+                res.status(200).json({status: 200, data: teamSchedule});
+            }
+
+    } catch(err){
+        console.log(err)
+        res.status(404).json({status: 404, data: {}, message: err.message})
+    }
+}
+
+const getLeagueSchedule = async (req, res) => {
     const league = req.params.league;
     let data;
     let request;
@@ -322,11 +379,13 @@ const deleteUser = async (req, res) => {
 module.exports = {
     getAllNews,
     getNews,
+    getNewsForTeam,
     getAllScoreboards,
     getAllTeamsFromLeague,
     getLeagueLogo,
     getTeamStats,
     getTeamSchedule,
+    getLeagueSchedule,
     getLeagueStandings,
     getUsers, getUser, createUser, deleteUser, updateUser
 }

@@ -10,8 +10,13 @@ import CreateAccount from './components/CreateAccount';
 import PickFavTeam from './components/PickFavTeam';
 import Schedule from './components/Schedule';
 import Standings from './components/Standings';
+import { UserContext } from './context/UserContext';
+import { useContext } from 'react';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
+  const {user} = useContext(UserContext);
+
   return (
     <BrowserRouter>
     <Container>
@@ -20,7 +25,7 @@ const App = () => {
       </SidebarContainer>
       <PageWrap>
         <Routes>
-          <Route path='/' element={<Homepage />} />
+          <Route path='/' element={window.sessionStorage.getItem('user') === null ? <Homepage /> : <Dashboard />} />
           <Route path='/news' element={<Scoreboard />} />
           <Route path='/news/:id' element={<NewsDetails />} />
           <Route path='/statistics' element={<Statistics/>} />
@@ -41,18 +46,19 @@ const App = () => {
 const PageWrap = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1 1 90ch;
+  width: 85vw;
+  flex: 1;
 `
 
 const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  flex: 1;
+  width: 100vw;
+  margin: auto;
 `
 
 const SidebarContainer = styled.div`
   display: flex;
-  width: 15%;
+  width: 15vw;
   height: 100vh;
 `
 

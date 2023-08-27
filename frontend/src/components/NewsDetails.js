@@ -23,6 +23,8 @@ const NewsDetails = () => {
     const params = useParams();
     const newsId = params.id;
 
+    console.log(news)
+
     useEffect(() => {
         const fetchNews = async () => {
             try {
@@ -41,17 +43,20 @@ const NewsDetails = () => {
         <>
         <Header />
         <Wrapper>
-                {Object.keys(news).length > 0 && 
             <Container>
+                {Object.keys(news).length > 0 ?
+                <>
                 <HeaderContainer>
-                    {news.video.length > 0 ? <ArticleVideo width='100%' light={<img src={news.video[0].thumbnail} alt='Thumbnail' />} url={news.video[0].links.source.href} playing={true} controls={true} />:
-                    <ArticleImage src={news.images[0].url}/>
+                    {news.video.length > 0 ? <ArticleVideo width='100%' light={<img src={news.video[0].thumbnail} alt='Thumbnail' width='100%' />} url={news.video[0].links.source.href !== undefined && news.video[0].links.source.href} playing={true} controls={true} />:
+                    <ArticleImage src={news.images.length > 0 && news.images[0].url !== undefined && news.images[0].url}/>
                     }
                     <TitleContainer>
                         <h1>{news.headline}</h1>
                         <Description>{news.description}</Description>
                     </TitleContainer>
-                    <Source>Source: {news.source}</Source>
+                    {news.source !== undefined &&
+                        <Source>Source: {news.source}</Source>
+                    }
                     <Published>{convertDate(news.published)}</Published>
                 </HeaderContainer>
                 <Article>
@@ -65,8 +70,15 @@ const NewsDetails = () => {
                     </RelatedArticles>
                 </RelatedArticlesContainer>
                 }
-            </Container>
+                </>
+            :
+            <>
+            <ErrorMessage>
+                Article not available.
+            </ErrorMessage>
+            </>
                 }
+            </Container>
         </Wrapper>
         </>
     )
@@ -154,6 +166,10 @@ const RelatedArticles = styled.div`
     gap: 20px;
     flex-wrap: wrap;
     width: 100%;
+`
+
+const ErrorMessage = styled.p`
+    margin-top: 20px;
 `
 
 

@@ -6,12 +6,14 @@ import NewsBoxBig from "./NewsBoxBig";
 import { COLORS } from "../Constants";
 import ScoreBox from "./ScoreBoxSmall";
 import { UserContext } from "../context/UserContext";
+import Loading from "./Loading";
 
 const Homepage = () => {
     const [news, setNews] = useState([]);
     const [scoreboard, setScoreboard] = useState({});
     const {user} = useContext(UserContext);
 
+    console.log(news)
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -43,10 +45,10 @@ const Homepage = () => {
         <Wrapper>
             <Header />
             <Content>
-                {user ? <h1>Dashboard</h1> : <h1>Home</h1>}
+                <h1>Home</h1>
                 <Section>
                 <MainContent>
-                    {news.length > 0 && news.map((news) => <NewsBoxBig news={news} key={news.id}/>)}
+                    {news.length === 0 ? <Loading /> : news.map((news) => <NewsBoxBig news={news} key={news.id}/>)}
                     {/* <Slider content={news}/> */}
                 </MainContent>
                 <Sibebar>

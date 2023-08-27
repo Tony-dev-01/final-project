@@ -81,7 +81,7 @@ const PickFavTeam = () => {
             newSelectedTeams.splice(teamIndex, 1);
             setSelectedTeams(newSelectedTeams);
         } else {
-            setSelectedTeams([...selectedTeams, team])
+            setSelectedTeams([...selectedTeams, {...team, league: selectedLeague}])
 
         }
     };
