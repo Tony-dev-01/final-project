@@ -1,10 +1,20 @@
 import { styled } from "styled-components";
 import { COLORS } from "../Constants";
+import { format, compareAsc } from 'date-fns';
 
 const ScoreBox = ({game}) => {
 
+    const convertDate = (date) => {
+        const month = format(new Date(date), 'MMM');
+        const day = format(new Date(date), 'd');
+        const year = format(new Date(date), 'y')
+        const dayOfWeek = format(new Date(date), 'cccc');
+        return `${dayOfWeek}, ${month} ${day}`;
+    };
+
     return(
         <Wrapper>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingRight: '20px'}}>
             <Container>
                 {game.competitors.map((comp) => {
                     return(
@@ -21,6 +31,15 @@ const ScoreBox = ({game}) => {
                     )
                 })}
             </Container>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', textAlign: 'center', width: '35%'}}>
+                {game.fullStatus.type.completed === true ? 
+                    <>
+                        <p>Final</p>
+                        <p style={{fontStyle: 'italic', textAlign: 'center'}}>{convertDate(game.date)}</p>
+                    </>
+                : <p>{game.fullStatus.type.shortDetail}</p>}
+                </div>
+            </div>
         </Wrapper>
     )
 }
@@ -40,12 +59,12 @@ const Container = styled.div`
     flex-direction: column;
     width: calc(60% - 20px);
     padding-left: 20px;
+    gap: 10px;
     justify-content: space-between;
 `
 
 const TeamContainer = styled.div`
     display: flex;
-    /* flex-direction: column; */
     width: 100%;
     justify-content: flex-start;
     align-items: center;

@@ -12,6 +12,8 @@ const handleSubmit = async (e, userInfo, setErrorMessage, navigate, setUser) => 
     const verifyInfo = () => {
         if (userInfo.password !== userInfo.confirmPassword){
             return setErrorMessage('Your password does not match.')
+        } else if (userInfo.password.length < 6){
+            return setErrorMessage('New password must contain at least 6 characters.')
         }
 
         Object.values(userInfo).map((value) => {
@@ -42,7 +44,7 @@ const handleSubmit = async (e, userInfo, setErrorMessage, navigate, setUser) => 
         if (response.status === 201){
             window.sessionStorage.setItem('user', JSON.stringify(response.data));
             setUser(response.data);
-            navigate('/user/pick-team');
+            navigate('/profile/pick-team');
         }
     } catch (err){
         console.log(err);

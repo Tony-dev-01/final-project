@@ -15,7 +15,8 @@ getLeagueStandings,
 getUser, 
 getTeamStats,
 createUser, 
-updateUser} = require('./handlers');
+updateUser,
+deleteUser} = require('./handlers');
 
 
 express()
@@ -67,6 +68,7 @@ express()
 .get('/users', getUser)
 .post('/users', createUser)
 .patch('/users', updateUser)
+.delete('/users/:userId', deleteUser)
 
 // Catch all endpoint
 .get('*', (req, res) => {

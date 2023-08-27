@@ -358,15 +358,9 @@ const deleteUser = async (req, res) => {
 
         const db = client.db('final-project');
 
-        const result = await db.collection("orders").deleteOne({ _id: userId });
+        const result = await db.collection("users").deleteOne({ _id: userId });
 
-        console.log(user)
-
-        if (result.deletedCount === 0) {
-            throw new Error();
-        } else{
-            res.status(200).json({status: 200, data: newUserInfo, message: 'user info updated'})
-        }
+        res.status(200).json({status: 200, data: {}, message: 'user deleted'})
 
     } catch(err){
         console.log(err.message)

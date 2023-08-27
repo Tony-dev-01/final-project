@@ -13,10 +13,15 @@ const SidebarMenu = () => {
     const navigate = useNavigate();
     const {user, setUser, disconnectUser} = useContext(UserContext);
 
-    const handleLogOut = (disconnectUser) => {
+    const handleLogOut = (e, disconnectUser) => {
+        e.stopPropagation();
         disconnectUser();
         setUser();
         navigate('/');
+    };
+
+    const handleClickProfile = () => {
+        navigate('/profile');
     };
 
     return (
@@ -26,15 +31,15 @@ const SidebarMenu = () => {
                 <MenuList>
                     {user ? <MenuLink to='/'><MenuItem><IoAnalyticsSharp />Dashboard</MenuItem></MenuLink> :
                     <MenuLink to='/'><MenuItem><IoHome />Home</MenuItem></MenuLink>}
-                    <MenuLink to='/scoreboard'><MenuItem><IoNewspaper />Scores</MenuItem></MenuLink>
+                    {/* <MenuLink to='/scoreboard'><MenuItem><IoNewspaper />Scores</MenuItem></MenuLink> */}
                     <MenuLink to='/statistics'><MenuItem><IoStatsChart />Statistics</MenuItem></MenuLink>
                     <MenuLink to='/schedule'><MenuItem><IoCalendarClear />Schedule</MenuItem></MenuLink>
                     <MenuLink to='/standings'><MenuItem><IoPodium />Standings</MenuItem></MenuLink>
                 </MenuList>
                 {user ? 
-                <UserContainer>
+                <UserContainer onClick={() => handleClickProfile()}>
                     <UserName>{user.userName}</UserName>
-                    <LogoutButton onClick={() => handleLogOut(disconnectUser)}><IoExitOutline style={{color: `${COLORS.secondOne}`, width: '100%', height: '100%'}}/></LogoutButton>
+                    <LogoutButton onClick={(e) => handleLogOut(e, disconnectUser)}><IoExitOutline style={{color: `${COLORS.secondOne}`, width: '100%', height: '100%'}}/></LogoutButton>
                 </UserContainer>
                 :
                 <ButtonContainer>
@@ -63,7 +68,8 @@ const MenuContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 95%;
+    height: calc(100% - 20px);
+    padding-top: 20px;
     width: 100%;
 `
 
@@ -121,14 +127,21 @@ const ButtonContainer = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    padding: 5% 0;
 `
 
 const UserContainer = styled.div`
     display: flex;
     border-top: 1px solid grey;
-    padding: 6% 20px 0 20px;
+    padding: 4% 20px;
     justify-content: space-between;
     align-items: center;
+    height: 50px;
+    cursor: pointer;
+
+    &:hover, &:focus{
+        background-color: #242424;
+    }
 `
 
 const UserName = styled.p`

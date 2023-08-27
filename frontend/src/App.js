@@ -13,6 +13,7 @@ import Standings from './components/Standings';
 import { UserContext } from './context/UserContext';
 import { useContext } from 'react';
 import Dashboard from './components/Dashboard';
+import Profile from './components/Profile';
 
 const App = () => {
   const {user} = useContext(UserContext);
@@ -33,7 +34,8 @@ const App = () => {
           <Route path='/standings' element={<Standings/>} />
           <Route path='/login' element={<Login/>} />
           <Route path='/create-account' element={<CreateAccount/>} />
-          <Route path='/user/pick-team' element={<PickFavTeam />} />
+          <Route path='/profile' element={<Profile/>} />
+          <Route path='/profile/pick-team' element={<PickFavTeam />} />
           <Route path='/' element={<Homepage />} />
           <Route path="*" element={<h1>404: Not Found!</h1>} />
         </Routes>

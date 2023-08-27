@@ -26,7 +26,8 @@ const Dashboard = () => {
     const [schedule, setSchedule] = useState([]);
     const [teamRecord, setTeamRecord] = useState({});
 
-    news.length > 0 && console.log(news);
+    console.log(scoreboard)
+
 
     const convertDate = (date) => {
         const month = format(new Date(date), 'MMM');
@@ -195,9 +196,13 @@ const Dashboard = () => {
                         <Scoreboard>
                             {Object.keys(scoreboard).length > 0 && user.favoriteTeams !== undefined && user.favoriteTeams.length > 0 && scoreboard.sports.map((sport) => sport.slug === selectedTeam.league.sport && true).includes(true) ?
                             scoreboard.sports.map((sport) => {
-                                if (sport.slug === selectedTeam.league.sport){
-                                        return sport.leagues[0].events.map((event) => <ScoreBox game={event} />)       
+                                if(sport.leagues.length > 0){
+                                    return sport.leagues.map((league) => {
+                                    if (league.slug === selectedTeam.league.league){
+                                        return league.events.map((event) => <ScoreBox game={event} />)       
                                     }
+                                    })
+                                }
                             })
                             : Object.keys(scoreboard).length === 0 || user.favoriteTeams === undefined || user.favoriteTeams.length === 0 || !scoreboard.sports.map((sport) => sport.slug === selectedTeam.league.sport && true).includes(true) ?
                                 <NoData>No data available</NoData>

@@ -52,7 +52,7 @@ const PickFavTeam = () => {
             const response = await request.json();
 
             if (response.status === 200){
-                updateUser(response.data)
+                updateUser(response.data);
                 navigate('/');
             } else {
                 throw new Error();

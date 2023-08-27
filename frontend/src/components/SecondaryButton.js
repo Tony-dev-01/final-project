@@ -4,9 +4,9 @@ import { PButton } from "./PrimaryButton";
 
 
 
-const SecondaryButton  = ({text, clickFunc}) => {
+const SecondaryButton  = ({text, clickFunc, type}) => {
     return (
-        <SecButton onClick={clickFunc}>{text}</SecButton>
+        <SecButton type={type} onClick={clickFunc}>{text}</SecButton>
     )
 }
 

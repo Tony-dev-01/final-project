@@ -1,9 +1,9 @@
 import { styled } from "styled-components";
 import { COLORS } from "../Constants";
 
-const PrimaryButton = ({text, clickFunc, width, disabled}) => {
+const PrimaryButton = ({text, clickFunc, width, disabled, type}) => {
     return ( 
-        <PButton onClick={clickFunc} width={width} disabled={disabled}>{text}</PButton>
+        <PButton type={type} onClick={clickFunc} width={width} disabled={disabled}>{text}</PButton>
     )
 }
 
@@ -12,7 +12,8 @@ export const PButton = styled.button`
     background-color: ${COLORS.primary};
     border: none;
     border-radius: 5px;
-    height: 30px;
+    min-height: 30px;
+    padding: 10px 0;
     color: ${COLORS.secondOne};
     cursor: pointer;
 
