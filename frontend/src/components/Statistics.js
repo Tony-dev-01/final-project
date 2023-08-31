@@ -1,5 +1,5 @@
 import { styled } from "styled-components"
-import { Wrapper, Content } from "./Homepage"
+import { Wrapper } from "./Homepage"
 import Header from "./Header"
 import { useContext, useEffect, useState } from "react"
 import { LeagueContext } from "../context/LeagueContext"
@@ -17,10 +17,6 @@ const Statistics = () => {
     const [error, setError] = useState('');
     const {state, updateLeague} = useContext(LeagueContext);
 
-    console.log(teamData)
-    console.log(teamInfo)
-
-    // console.log(teams)
 
     const handleLeagueSelect = async (e) => {
         const league = e.target.value;
@@ -162,7 +158,7 @@ const Statistics = () => {
                                 </TeamRecordContainer>
                             </TeamDisplay>
                             }
-                                <StatsTitle>Team</StatsTitle>
+                                {/* <StatsTitle>Team</StatsTitle> */}
                                 <Stats>
                                     {teamData.splits.categories.map((category) => {
                                         return (
@@ -171,7 +167,7 @@ const Statistics = () => {
                                                 <StatsRows>
                                                 {category.stats.map((stat) => {
                                                     return(
-                                                        <StatsBox>
+                                                        <StatsBox key={stat.abbreviation}>
                                                             <StatIdent>
                                                                 <StatsValue>{stat.displayValue}</StatsValue>
                                                                 <StatsName>{stat.displayName}</StatsName>
@@ -201,6 +197,17 @@ const Section = styled.section`
 
 const Container = styled.div`
     display: flex;
+`
+
+const Content = styled.main`
+    display: flex;
+    gap: 50px;
+    flex-direction: column;
+    margin-top: 15vh;
+    min-height: 100vh;
+    height: 100%;
+    width: calc(100% - 60px);
+    padding: 0 30px;
 `
 
 const StatsContainer = styled.div`

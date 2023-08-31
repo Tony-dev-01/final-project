@@ -1,7 +1,7 @@
 import { Content, Wrapper } from "./Homepage";
 import { styled } from "styled-components";
 import { UserContext } from "../context/UserContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { COLORS } from "../Constants";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
@@ -16,6 +16,12 @@ const Profile = () => {
 
     console.log(user)
     console.log(userInfo)
+
+    useEffect(() => {
+        if (user === null){
+            navigate('/');
+        }
+    }, [user])
 
     const handleChange = (e) => {
         const key = e.target.name;
@@ -42,9 +48,7 @@ const Profile = () => {
     console.log('submit')
 
     const verifyInfo = () => {
-        if (userInfo.currentPassword !== undefined && userInfo.currentPassword !== user.password){
-            return setErrorMessage('Your current password is incorrect.')
-        } else if (userInfo.newPassword !== undefined && userInfo.newPassword.length < 6){
+        if (userInfo.newPassword !== undefined && userInfo.newPassword.length < 6){
             return setErrorMessage('New password must contain at least 6 characters.')
         } else if (userInfo.currentPassword !== undefined && userInfo.newPassword === undefined){
             return setErrorMessage('Please enter a new password');
@@ -73,7 +77,6 @@ const Profile = () => {
 
         if (Object.keys(userInfo).includes('newPassword')){
             delete newInfo['confirmPassword'];
-            delete newInfo['currentPassword'];
         }
 
         const request = await fetch('/users', {
@@ -92,6 +95,8 @@ const Profile = () => {
             updateUser(response.data);
             window.location.reload();
             // navigate('/profile/pick-team');
+        } else if (response.status === 404){
+            throw new Error(response.message);
         }
     } catch (err){
         console.log(err);
@@ -101,7 +106,6 @@ const Profile = () => {
 
     const handleLogOut = () => {
         disconnectUser();
-        setUser();
         navigate('/');
     };
     
@@ -138,7 +142,6 @@ const Profile = () => {
 
     return (
         <>
-        {Object.keys(user).length == 0 || user === undefined ? navigate('/') : 
         <Wrapper>
             {del && 
             <DeleteOverlay>
@@ -153,6 +156,7 @@ const Profile = () => {
                 </DeleteContainer>
             </DeleteOverlay>
             }
+            {user &&
             <Content>
                 <h1>Profile</h1>
                 <MainContent>
@@ -239,8 +243,8 @@ const Profile = () => {
                     </InfoContainer>
                 </MainContent>
             </Content>
-        </Wrapper>
         }
+        </Wrapper>
         </>
     )
 };

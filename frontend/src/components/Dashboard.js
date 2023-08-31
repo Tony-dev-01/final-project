@@ -4,19 +4,23 @@ import Slider from "./Slider";
 import { useContext, useEffect, useState } from "react";
 import NewsBoxBig from "./NewsBoxBig";
 import { COLORS } from "../Constants";
-import ScoreBox from "./ScoreBoxSmall";
+import ScoreBox from "./ScoreBox";
 import { UserContext } from "../context/UserContext";
 import { Wrapper, Content } from "./Homepage";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { format, compareAsc } from 'date-fns';
+import Loading from "./Loading";
 
 const Dashboard = () => {
     const {user} = useContext(UserContext);
+    const navigate = useNavigate();
     const [news, setNews] = useState([]);
     const [scoreboard, setScoreboard] = useState({});
     const [selectedTeam, setSelectedTeam] = useState(() => {
-        if (user.favoriteTeams !== undefined && user.favoriteTeams.length > 0){
-            return user.favoriteTeams[0];
+        if (user && user.favoriteTeams !== undefined){
+            if(user.favoriteTeams.length > 0){
+                return user.favoriteTeams[0];
+            }
         } else {
             return {};
         }
@@ -25,9 +29,6 @@ const Dashboard = () => {
     const [stats, setStats] = useState({});
     const [schedule, setSchedule] = useState([]);
     const [teamRecord, setTeamRecord] = useState({});
-
-    console.log(scoreboard)
-
 
     const convertDate = (date) => {
         const month = format(new Date(date), 'MMM');
@@ -51,24 +52,32 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
+        if (user === null){
+            return navigate('/');
+        }
         const fetchNews = async () => {
             try {
                 let data;
                 let response;
 
-                if (user.favoriteTeams !== undefined && user.favoriteTeams.length > 0 && Object.keys(selectedTeam).length > 0){
-                    let selectTeam;
-                    user.favoriteTeams.map((team) => {
-                        if (team.slug === selectedTeam.slug){
-                            selectTeam = team;
-                        }
-                    })
-                    response = await fetch(`/news/${selectTeam.league.sport}/${selectTeam.league.league}/${selectTeam.id}`);
-                } else {
+                if (user.favoriteTeams !== undefined){
+                    if (user.favoriteTeams.length > 0 && Object.keys(selectedTeam).length > 0){
+                        let selectTeam;
+                        user.favoriteTeams.map((team) => {
+                            if (team.slug === selectedTeam.slug){
+                                selectTeam = team;
+                            }
+                        })
+                        response = await fetch(`/news/${selectTeam.league.sport}/${selectTeam.league.league}/${selectTeam.id}`);
+                        data = await response.json();
+                        setNews(data.data.articles)
+                    }
+                } else if (user.favoriteTeams === undefined){
                     response = await fetch('/news');
+                    data = await response.json();
+                    setNews(data.data)
                 }
-                data = await response.json();
-                setNews(data.data.articles)
+
             } catch(err) {
                 console.log(err.message)
             }
@@ -125,11 +134,12 @@ const Dashboard = () => {
     return (
         <Wrapper>
             <Header />
+            {user &&
             <Content>
                 <h1>Dashboard</h1>
                 <div>
                     {user.favoriteTeams === undefined || user.favoriteTeams.length === 0 ?
-                    <p><Link to="/user/pick-team">Click here</Link> to choose your favorite team.</p> : 
+                    <p><Link to="/profile/pick-team">Click here</Link> to choose your favorite team.</p> : 
                     <SelectTeamDrop>
                     <label for='teams'>Select team</label>
                         <select name='teams' defaultValue={user.favoriteTeams[0].displayName} onChange={(e) => handleTeamSelect(e)} >
@@ -187,7 +197,7 @@ const Dashboard = () => {
                     }
                     <Section>
                 <MainContent>
-                    {news.length > 0 && news.map((news) => <NewsBoxBig news={news} key={news.id}/>)}
+                    {news !== undefined ? news.map((news) => <NewsBoxBig news={news} key={news.id}/>) : <Loading />}
                     {/* <Slider content={news}/> */}
                 </MainContent>
                 <Sibebar>
@@ -223,6 +233,7 @@ const Dashboard = () => {
                 </Section>
                 </MainContainer>
             </Content>
+        }
         </Wrapper>
     )
 };

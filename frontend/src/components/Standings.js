@@ -14,9 +14,6 @@ const Standings = () => {
     const [error, setError] = useState('');
     const {state, updateLeague} = useContext(LeagueContext);
 
-    console.log(data)
-
-    // console.log(teams)
 
     const handleLeagueSelect = async (e) => {
         const league = e.target.value;
@@ -309,6 +306,7 @@ const TeamInfo = styled.div`
 
 const TeamStatsContainer = styled.div`
     display: flex;
+    justify-content: flex-end;
     gap: 20px;
     width: 68%;
 `

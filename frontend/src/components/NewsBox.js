@@ -39,7 +39,7 @@ const Container = styled.div`
     max-height: 250px;
     min-height: 200px;
     border-radius: 8px;
-    background-color: pink;
+    background-color: grey;
 `
 
 const ArticleImage = styled.img`

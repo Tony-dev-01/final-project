@@ -49,13 +49,15 @@ const PageWrap = styled.div`
   display: flex;
   flex-direction: column;
   width: 85vw;
-  flex: 1;
+  /* flex: 1; */
+  /* height: 100%; */
 `
 
 const Container = styled.div`
   display: flex;
   width: 100vw;
   margin: auto;
+  height: 100%; /* Why is it not working at 100%? */
 `
 
 const SidebarContainer = styled.div`

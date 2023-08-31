@@ -25,8 +25,6 @@ export const UserContextProvider = ({children}) => {
     const [user, setUser] = useState(() => {
         const user = JSON.parse(window.sessionStorage.getItem('user'));
 
-        console.log(user)
-
         if (user){
             return user;
         } else {

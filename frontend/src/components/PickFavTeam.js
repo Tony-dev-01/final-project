@@ -6,19 +6,23 @@ import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 const PickFavTeam = () => {
-    const {user, updateUser} = useContext(UserContext);
+    const {user, updateUser, setUser} = useContext(UserContext);
     const [selectedLeague, setSelectedLeague] = useState({});
     const [teams, setTeams] = useState([]);
     const [selectedTeams, setSelectedTeams] = useState([]);
     const navigate = useNavigate();
 
     console.log(user)
+    console.log(selectedLeague)
+    console.log(selectedTeams)
 
     // set users favorite teams on load
     useEffect(() => {
-        if (user.favoriteTeams){
+        if (!user){
+            navigate('/');
+        } else {
             setSelectedTeams(user.favoriteTeams);
-        };
+        }
     }, [])
 
     const handleChange = (e) => {
@@ -53,6 +57,7 @@ const PickFavTeam = () => {
 
             if (response.status === 200){
                 updateUser(response.data);
+                // setUser();
                 navigate('/');
             } else {
                 throw new Error();
@@ -68,12 +73,14 @@ const PickFavTeam = () => {
         let isSelected = false;
         let teamIndex;
 
-        selectedTeams.map((selectedTeam, index) => {
-            if (selectedTeam.slug === team.slug){
-                isSelected = true;
-                teamIndex = index;
-            }
-        });
+        if (selectedTeams !== undefined){
+            selectedTeams.map((selectedTeam, index) => {
+                if (selectedTeam.slug === team.slug){
+                    isSelected = true;
+                    teamIndex = index;
+                }
+            });
+        }
 
 
         if (isSelected){
@@ -81,7 +88,11 @@ const PickFavTeam = () => {
             newSelectedTeams.splice(teamIndex, 1);
             setSelectedTeams(newSelectedTeams);
         } else {
-            setSelectedTeams([...selectedTeams, {...team, league: selectedLeague}])
+            if(selectedTeams !== undefined){
+                setSelectedTeams([...selectedTeams, {...team, league: selectedLeague}])
+            } else {
+                setSelectedTeams([{...team, league: selectedLeague}])
+            }
 
         }
     };
@@ -89,14 +100,14 @@ const PickFavTeam = () => {
     const isTeamSelected = (team) => {
         let selected = false;
 
-        selectedTeams.map((selectedTeam) => {
-            if (selectedTeam.slug === team.slug){
-                selected = true
-            }
-        })
+        if (selectedTeams !== undefined){
+            selectedTeams.map((selectedTeam) => {
+                if (selectedTeam.slug === team.slug){
+                    return selected = true;
+                }
+            })
+        }
         
-        console.log(selected)
-
         return selected;
     };
 
@@ -121,6 +132,7 @@ const PickFavTeam = () => {
 
     return (
         <Wrapper>
+            {user &&
             <Content>
                 <h1>Pick your favorite team</h1>
                 <h2>Leagues</h2>
@@ -138,9 +150,9 @@ const PickFavTeam = () => {
                 <>
                     <h2>Teams</h2>
                     <Teams>
-                        {teams.map((team) => {
+                        {teams.length > 0 && teams.map((team) => {
                             return(
-                                <TeamContainer key={team.id} onClick={() => handleTeamClick(team)} isSelected={() => isTeamSelected(team)}>
+                                <TeamContainer key={team.id} onClick={() => handleTeamClick(team)} isSelected={isTeamSelected(team)}>
                                     <TeamLogo src={team.logos[0].href} />
                                     <TeamName>{team.displayName}</TeamName>
                                 </TeamContainer>
@@ -151,10 +163,11 @@ const PickFavTeam = () => {
                 }
 
                 <Buttons>
-                    <ConfirmButton type="submit" disabled={selectedTeams.length === 0}  onClick={() => handleSubmit()}>Confirm</ConfirmButton>
+                    <ConfirmButton type="submit" disabled={selectedTeams === undefined || selectedTeams.length === 0}  onClick={() => handleSubmit()}>Confirm</ConfirmButton>
                     <SkipButton onClick={() => navigate('/')}>Do it later</SkipButton>
                 </Buttons>
             </Content>
+        }
         </Wrapper>
     )
 }
@@ -169,6 +182,7 @@ const Teams = styled.div`
 
 const TeamContainer = styled.button`
     background-color: ${props => props.isSelected === true ? `${COLORS.primary}` : `${COLORS.secondOne}`};
+    color: ${props => props.isSelected === true ? `white` : 'grey'};
     width: 150px;
     height: 150px;
     display: flex;
@@ -193,7 +207,6 @@ const TeamContainer = styled.button`
 `
 
 const TeamName = styled.p`
-    color: grey;
     margin: 10px 0;
 `
 

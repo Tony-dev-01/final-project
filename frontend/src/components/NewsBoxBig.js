@@ -52,7 +52,7 @@ const Container = styled.div`
     width: 100%;
     height: 370px;
     border-radius: 8px;
-    background-color: pink;
+    background-color: grey;
     background-image: url(${props => props.src || 'lightgrey'});
     background-position: center;
     background-size: cover;

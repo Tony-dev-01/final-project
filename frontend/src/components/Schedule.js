@@ -19,8 +19,6 @@ const Schedule = () => {
     const {state, updateLeague} = useContext(LeagueContext);
     const weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
-    console.log(scheduleData)
-    // console.log(Object.keys(scheduleData).length > 0 && Object.keys(scheduleData.schedule))
 
     const convertDate = (date) => {
         const month = format(new Date(date), 'MMM');

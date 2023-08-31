@@ -17,7 +17,6 @@ const handleSubmit = async (e, userInfo, setErrorMessage, navigate, setUser) => 
         }
 
         Object.values(userInfo).map((value) => {
-            console.log(value)
             if (value.includes('{') || value.includes('"') || value.includes("'") || value.includes('<') || value.includes('[')){
                 return setErrorMessage('Please use letters, numbers and/or special characters.')
             } else {

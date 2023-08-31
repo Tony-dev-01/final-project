@@ -4,7 +4,7 @@ import Slider from "./Slider";
 import { useContext, useEffect, useState } from "react";
 import NewsBoxBig from "./NewsBoxBig";
 import { COLORS } from "../Constants";
-import ScoreBox from "./ScoreBoxSmall";
+import ScoreBox from "./ScoreBox";
 import { UserContext } from "../context/UserContext";
 import Loading from "./Loading";
 
@@ -13,7 +13,6 @@ const Homepage = () => {
     const [scoreboard, setScoreboard] = useState({});
     const {user} = useContext(UserContext);
 
-    console.log(news)
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -91,7 +90,8 @@ export const Content = styled.main`
     gap: 50px;
     flex-direction: column;
     margin-top: 15vh;
-    height: 100vh;
+    min-height: 100vh;
+    height: 100%;
     width: calc(100% - 60px);
     padding: 0 30px;
 `

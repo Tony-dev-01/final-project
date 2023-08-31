@@ -47,7 +47,7 @@ const NewsDetails = () => {
                 {Object.keys(news).length > 0 ?
                 <>
                 <HeaderContainer>
-                    {news.video.length > 0 ? <ArticleVideo width='100%' light={<img src={news.video[0].thumbnail} alt='Thumbnail' width='100%' />} url={news.video[0].links.source.href !== undefined && news.video[0].links.source.href} playing={true} controls={true} />:
+                    {news.video.length > 0 ? <ArticleVideo light={<img src={news.video[0].thumbnail} alt='Thumbnail' width='100%' />} url={news.video[0].links.source.href !== undefined && news.video[0].links.source.href} playing={true} controls={true} />:
                     <ArticleImage src={news.images.length > 0 && news.images[0].url !== undefined && news.images[0].url}/>
                     }
                     <TitleContainer>
@@ -90,7 +90,7 @@ const Wrapper = styled.main`
     padding: 0 30px;
     width: 83vw;
     width: calc(100% - 60px);
-    margin: 40px 0;
+    margin: 70px 0;
 `
 
 const Container = styled.div`
@@ -114,6 +114,7 @@ const ArticleVideo = styled(ReactPlayer)`
     display: flex;
     justify-content: flex-start;
     width: fit-content;
+    margin-bottom: 30px;
 `
 
 
@@ -151,7 +152,8 @@ const RelatedArticlesContainer = styled.div`
     display: flex;
     margin-top: 30px;
     flex-direction: column;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    overflow-x: scroll;
     width: 100%;
     gap: 15px;
 `
@@ -164,7 +166,8 @@ const RelatedArticlesTitle = styled.h3`
 const RelatedArticles = styled.div`
     display: flex;
     gap: 20px;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    overflow-x: scroll;
     width: 100%;
 `
 

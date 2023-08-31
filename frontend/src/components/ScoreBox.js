@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import { COLORS } from "../Constants";
 import { format, compareAsc } from 'date-fns';
 
-const ScoreBoxSmall = ({game}) => {
+const ScoreBox = ({game}) => {
 
     const convertDate = (date) => {
         const month = format(new Date(date), 'MMM');
@@ -14,7 +14,7 @@ const ScoreBoxSmall = ({game}) => {
 
     return(
         <Wrapper>
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingRight: '20px'}}>
             <Container>
                 {game.competitors.map((comp) => {
                     return(
@@ -23,9 +23,9 @@ const ScoreBoxSmall = ({game}) => {
                             <TeamInfo>
                                 <TeamDiv>
                                     <TeamLogo src={comp.logo} />
-                                    <p>{comp.abbreviation}</p>
+                                    <p>{comp.name}</p>
                                 </TeamDiv>
-                                {/* <TeamRecord>{comp.record}</TeamRecord> */}
+                                <TeamRecord>{comp.record}</TeamRecord>
                             </TeamInfo>
                         </TeamContainer>
                     )
@@ -34,9 +34,10 @@ const ScoreBoxSmall = ({game}) => {
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px', textAlign: 'center', width: '35%'}}>
                 {game.fullStatus.type.completed === true ? 
                     <>
-                        <p style={{fontStyle: 'italic', textAlign: 'center', fontSize: '0.9em'}}>Final</p>
+                        <p>Final</p>
+                        <p style={{fontStyle: 'italic', textAlign: 'center'}}>{convertDate(game.date)}</p>
                     </>
-                : <p style={{textAlign: 'center', fontSize: '0.8em'}}>{game.fullStatus.type.shortDetail}</p>}
+                : <p>{game.fullStatus.type.shortDetail}</p>}
                 </div>
             </div>
         </Wrapper>
@@ -46,17 +47,18 @@ const ScoreBoxSmall = ({game}) => {
 const Wrapper = styled.div`
     display: flex;
     background: white;
-    border-radius: 5px;
-    width: 160px;
-    height: 40px;
-    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+    height: 85px;
+    padding: 10px 0;
     border-left: 3px solid ${COLORS.primary};
 `
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    width: calc(60% - 10px);
+    width: calc(60% - 20px);
+    padding-left: 20px;
     gap: 10px;
     justify-content: space-between;
 `
@@ -66,7 +68,7 @@ const TeamContainer = styled.div`
     width: 100%;
     justify-content: flex-start;
     align-items: center;
-    gap: 10px;
+    gap: 25px;
 `
 
 const TeamInfo = styled.div`
@@ -88,7 +90,7 @@ const TeamLogo = styled.img`
 
 const TeamScore = styled.p`
     font-weight: 600;
-    font-size: 1.1em;
+    font-size: 1.4em;
 `
 
 const TeamRecord = styled.p`
@@ -102,4 +104,4 @@ const TeamRecord = styled.p`
 
 
 
-export default ScoreBoxSmall;
+export default ScoreBox;
