@@ -69,13 +69,13 @@ const MenuContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     height: calc(100% - 20px);
-    padding-top: 20px;
+    padding-top: 50px;
     width: 100%;
 `
 
 const Logo = styled.img`
     cursor: pointer;
-    width: 100px;
+    width: 140px;
 `
 
 const LogoContainer = styled.div`

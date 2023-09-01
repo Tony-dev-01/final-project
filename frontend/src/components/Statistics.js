@@ -197,6 +197,7 @@ const Section = styled.section`
 
 const Container = styled.div`
     display: flex;
+    height: 100%;
 `
 
 const Content = styled.main`
@@ -226,7 +227,7 @@ const StatsTitle = styled.h3`
 
 const Stats = styled.div`
     display: flex;
-    height: 100px;
+    height: 100%;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
