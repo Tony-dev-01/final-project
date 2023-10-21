@@ -1,15 +1,15 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import logo from '../assets/logo-light.png'
-import { IoAnalyticsSharp, IoHome, IoBarChart, IoCalendarClear, IoStatsChart, IoPodium, IoNewspaper, IoExitOutline } from "react-icons/io5";
+import { IoAnalyticsSharp, IoHome, IoBarChart, IoCalendarClear, IoStatsChart, IoPodium, IoNewspaper, IoExitOutline, IoPersonCircle, IoPersonAddOutline } from "react-icons/io5";
 import { COLORS } from "../Constants";
-import PrimaryButton from "./PrimaryButton";
-import SecondaryButton from "./SecondaryButton";
+import PrimaryMenuButton from "./PrimaryMenuButton";
+import SecondaryMenuButton from "./SecondaryMenuButton";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
 
-const SidebarMenu = () => {
+const SidebarMenu = ({openMenu}) => {
     const navigate = useNavigate();
     const {user, setUser, disconnectUser} = useContext(UserContext);
 
@@ -25,26 +25,26 @@ const SidebarMenu = () => {
     };
 
     return (
-        <Wrapper>
+        <Wrapper openMenu={openMenu}>
             <MenuContainer>
-                <LogoContainer><NavLink to='/'><Logo src={logo} /></NavLink></LogoContainer>
+                <LogoContainer><NavLink to='/'><Logo src={logo} openMenu={openMenu}/></NavLink></LogoContainer>
                 <MenuList>
-                    {user ? <MenuLink to='/'><MenuItem><IoAnalyticsSharp />Dashboard</MenuItem></MenuLink> :
-                    <MenuLink to='/'><MenuItem><IoHome />Home</MenuItem></MenuLink>}
+                    {user ? <MenuLink to='/'><MenuItem openMenu={openMenu}><MenuIcon><IoAnalyticsSharp /></MenuIcon><MenuText openMenu={openMenu}>Dashboard</MenuText></MenuItem></MenuLink> :
+                    <MenuLink to='/'><MenuItem openMenu={openMenu}><MenuIcon><IoHome /></MenuIcon><MenuText openMenu={openMenu}>Home</MenuText></MenuItem></MenuLink>}
                     {/* <MenuLink to='/scoreboard'><MenuItem><IoNewspaper />Scores</MenuItem></MenuLink> */}
-                    <MenuLink to='/statistics'><MenuItem><IoStatsChart />Statistics</MenuItem></MenuLink>
-                    <MenuLink to='/schedule'><MenuItem><IoCalendarClear />Schedule</MenuItem></MenuLink>
-                    <MenuLink to='/standings'><MenuItem><IoPodium />Standings</MenuItem></MenuLink>
+                    <MenuLink to='/statistics'><MenuItem openMenu={openMenu}><MenuIcon><IoStatsChart /></MenuIcon><MenuText openMenu={openMenu}>Statistics</MenuText></MenuItem></MenuLink>
+                    <MenuLink to='/schedule'><MenuItem openMenu={openMenu}><MenuIcon><IoCalendarClear /></MenuIcon><MenuText openMenu={openMenu}>Schedule</MenuText></MenuItem></MenuLink>
+                    <MenuLink to='/standings'><MenuItem openMenu={openMenu}><MenuIcon><IoPodium /></MenuIcon><MenuText openMenu={openMenu}>Standings</MenuText></MenuItem></MenuLink>
                 </MenuList>
                 {user ? 
-                <UserContainer onClick={() => handleClickProfile()}>
-                    <UserName>{user.userName}</UserName>
+                <UserContainer openMenu={openMenu} onClick={() => handleClickProfile()}>
+                    <UserName openMenu={openMenu}>{user.userName}</UserName>
                     <LogoutButton onClick={(e) => handleLogOut(e, disconnectUser)}><IoExitOutline style={{color: `${COLORS.secondOne}`, width: '100%', height: '100%'}}/></LogoutButton>
                 </UserContainer>
                 :
                 <ButtonContainer>
-                    <PrimaryButton text={"Login"} clickFunc={() => navigate('/login')} />
-                    <SecondaryButton text={"Create Account"} clickFunc={() => navigate('/create-account')} />
+                    <PrimaryMenuButton openMenu={openMenu} text={"Login"} clickFunc={() => navigate('/login')} icon={<IoPersonCircle />}/>
+                    <SecondaryMenuButton openMenu={openMenu} text={"Create Account"} clickFunc={() => navigate('/create-account')} icon={<IoPersonAddOutline />}/>
                 </ButtonContainer>
                 }
             </MenuContainer>
@@ -56,7 +56,8 @@ const Wrapper = styled.nav`
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 15vw;
+    width: ${props => props.openMenu ? '15vw' : '5vw'};
+    transition: all 0.8s ease;
     /* min-width: 180px; */
     background-color: #141414;
     color: white;
@@ -70,12 +71,15 @@ const MenuContainer = styled.div`
     justify-content: space-between;
     height: calc(100% - 20px);
     padding-top: 50px;
+    /* padding-bottom: 10px; */
     width: 100%;
 `
 
 const Logo = styled.img`
     cursor: pointer;
     width: 140px;
+    transition: all 0.8s ease;
+    transform: translateX(${props => !props.openMenu && '-100%'});
 `
 
 const LogoContainer = styled.div`
@@ -93,11 +97,27 @@ const MenuList = styled.ul`
 const MenuItem = styled.li`
     display: flex;
     align-items: center;
-    gap: 20px;
+    transition: all 0.8s ease;
+    justify-content: ${props => !props.openMenu ? 'center' : 'flex-start'};
+    /* justify-content: center; */
+    gap: ${props => !props.openMenu ? '0px' : '20px' };
     width: calc(100% - 40px);
     padding: 0 20px;
     height: 50px;
 `
+
+const MenuText = styled.span`
+    transition: all 0.8s ease;
+    opacity: ${props => !props.openMenu && '0'};
+    transform: translateX(${props => !props.openMenu ? '-50%' : '0%'});
+    /* visibility: ${props => !props.openMenu && 'hidden'}; */
+    width: ${props => !props.openMenu && '0px'};
+`
+
+const MenuIcon = styled.span`
+
+`
+
 
 const MenuLink = styled(NavLink)`
     text-decoration: none;
@@ -133,10 +153,12 @@ const ButtonContainer = styled.div`
 const UserContainer = styled.div`
     display: flex;
     border-top: 1px solid grey;
-    padding: 4% 20px;
-    justify-content: space-between;
+    transition: all 0.5s ease;
+    padding: ${props => !props.openMenu ? '4px 5px' : '4% 20px' };
+    justify-content: ${props => !props.openMenu ? 'center' : 'space-between'};
     align-items: center;
     height: 50px;
+    min-height: 65px;
     cursor: pointer;
 
     &:hover, &:focus{
@@ -145,6 +167,11 @@ const UserContainer = styled.div`
 `
 
 const UserName = styled.p`
+    transition: all 0s ease;
+    opacity: ${props => !props.openMenu && '0'};
+    transform: translateX(${props => !props.openMenu ? '-50%' : '0%'});
+    /* visibility: ${props => !props.openMenu && 'hidden'}; */
+    width: ${props => !props.openMenu && '0px'};
 `
 
 const LogoutButton = styled.button`

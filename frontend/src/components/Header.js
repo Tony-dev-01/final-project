@@ -92,7 +92,7 @@ const Wrapper = styled.nav`
     display: flex;
     align-items: center;
     height: 70px;
-    width: 85%;
+    width: 100%; /* play with the width */
     background-color: ${COLORS.secondThree};
     position: fixed;
     overflow-x: scroll;
@@ -102,6 +102,8 @@ const Container = styled.div`
     display: flex;
     gap: 15px;
     align-items: center;
+    /* overflow-x: scroll;
+    width: 100%; */
 `
 
 const DropdownContainer = styled.div`

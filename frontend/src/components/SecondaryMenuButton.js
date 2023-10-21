@@ -4,7 +4,7 @@ import { PButton } from "./PrimaryButton";
 
 
 
-const SecondaryButton  = ({text, clickFunc, type, openMenu, icon}) => {
+const SecondaryMenuButton  = ({text, clickFunc, type, openMenu, icon}) => {
     return (
         <SecButton openMenu={openMenu} type={type} onClick={clickFunc}><ButtonText openMenu={openMenu}>{text}</ButtonText>{icon !== undefined && icon}</SecButton>
     )
@@ -29,7 +29,11 @@ const SecButton = styled(PButton)`
 `
 
 const ButtonText = styled.p`
-    width: 100%;
+    transition: all 0.8s ease;
+    opacity: ${props => !props.openMenu && '0'};
+    transform: translateX(${props => !props.openMenu ? '-50%' : '0%'});
+    visibility: ${props => !props.openMenu && 'hidden'};
+    width: ${props => !props.openMenu ? '0px' : '75%'};
 `
 
-export default SecondaryButton;
+export default SecondaryMenuButton;

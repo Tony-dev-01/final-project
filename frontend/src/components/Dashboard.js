@@ -139,7 +139,7 @@ const Dashboard = () => {
                 <h1>Dashboard</h1>
                 <div>
                     {user.favoriteTeams === undefined || user.favoriteTeams.length === 0 ?
-                    <p><Link to="/profile/pick-team">Click here</Link> to choose your favorite team.</p> : 
+                    <PickTeamContainer><p><Link to="/profile/pick-team">Click here</Link> to choose your favorite team.</p></PickTeamContainer> : 
                     <SelectTeamDrop>
                     <label for='teams'>Select team</label>
                         <select name='teams' defaultValue={user.favoriteTeams[0].displayName} onChange={(e) => handleTeamSelect(e)} >
@@ -278,6 +278,16 @@ const TeamLogo = styled.img`
 const TeamInfo = styled.div`
     display: flex;
     flex-direction: column;
+`
+
+const PickTeamContainer = styled.div`
+    display: flex;
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    padding-left: 15px;
+    border-radius: 8px;
+    background-color: ${COLORS.secondOne};
 `
 
 

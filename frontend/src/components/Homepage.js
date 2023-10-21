@@ -43,6 +43,7 @@ const Homepage = () => {
     return (
         <Wrapper>
             <Header />
+
             <Content>
                 <h1>Home</h1>
                 <Section>
@@ -77,7 +78,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 85vw;
+    width: 100%;
     min-height: 100vh;
     height: 100%;
     margin: auto;
@@ -93,6 +94,7 @@ export const Content = styled.main`
     min-height: 100vh;
     height: 100%;
     width: calc(100% - 60px);
+    /* width: 100%; */
     padding: 0 30px;
 `
 

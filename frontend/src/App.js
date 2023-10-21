@@ -11,20 +11,35 @@ import PickFavTeam from './components/PickFavTeam';
 import Schedule from './components/Schedule';
 import Standings from './components/Standings';
 import { UserContext } from './context/UserContext';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profile';
 
 const App = () => {
   const {user} = useContext(UserContext);
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const handleHover = () => {
+    // Open menu
+    setOpenMenu(true);
+  }
+
+  const handleMouseLeave = () => {
+    // setTimeout(() => {
+    //   console.log('close menu');
+    //   setOpenMenu(false);
+    // }, 800);
+    // Close menu
+    setOpenMenu(false);
+  }
 
   return (
     <BrowserRouter>
     <Container>
-      <SidebarContainer>
-        <SidebarMenu />
+      <SidebarContainer isOpen={openMenu} onMouseEnter={() => handleHover()} onMouseLeave={() => handleMouseLeave()}>
+        <SidebarMenu openMenu={openMenu} />
       </SidebarContainer>
-      <PageWrap>
+      <PageWrap isOpen={openMenu}>
         <Routes>
           <Route path='/' element={window.sessionStorage.getItem('user') === null ? <Homepage /> : <Dashboard />} />
           <Route path='/news' element={<Scoreboard />} />
@@ -48,7 +63,9 @@ const App = () => {
 const PageWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 85vw;
+  /* width: 85vw; */
+  width: ${props => props.isOpen ? '85vw' : '95vw'};
+  transition: all 0.8s ease;
   /* flex: 1; */
   /* height: 100%; */
 `
@@ -57,12 +74,14 @@ const Container = styled.div`
   display: flex;
   width: 100vw;
   margin: auto;
-  height: 100%; /* Why is it not working at 100%? */
+  height: 100%; 
 `
 
 const SidebarContainer = styled.div`
   display: flex;
-  width: 15vw;
+  /* width: 15vw; */
+  width: ${props => props.isOpen ? '15vw' : '5vw'};
+  transition: all 0.8s ease;
   height: 100vh;
 `
 
